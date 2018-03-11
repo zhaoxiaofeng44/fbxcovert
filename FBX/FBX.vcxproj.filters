@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{b149c66f-6e6f-467a-a220-d10f0bf9e96d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine">
+      <UniqueIdentifier>{082f46e2-f4a5-495a-8e89-ca00345927a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{6dd6dadf-a322-48cd-8e1d-6e1803a44fec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Node">
+      <UniqueIdentifier>{01408d54-e896-4ad1-bd6b-4011523edef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Fbx">
+      <UniqueIdentifier>{99f42c97-d1f9-43ba-958d-dca15719fe6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Model">
+      <UniqueIdentifier>{c3ee0fcf-d07e-4234-b3b5-619835cc2e36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{088cc8e9-004a-4f10-acee-f44ca55fb043}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Serialize">
+      <UniqueIdentifier>{14bd361e-343a-4748-8c31-59a0c5e62a8d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\GLEngine\log.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bonenode.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\meshnode.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\node.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\nodetree.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fbxdevice.h">
+      <Filter>src\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fbxcore.h">
+      <Filter>src\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\face.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\point.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\vec2f.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\vec3f.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\vec4f.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\vml.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\color.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\matrix4x4.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\quaternion.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\config.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\clusternode.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\materialnode.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="element.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fbxcast.h">
+      <Filter>src\Fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="nodeset.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\json\json.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="src\json\json-forwards.h">
+      <Filter>json</Filter>
+    </ClInclude>
+    <ClInclude Include="serialize.h">
+      <Filter>src\Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="jsonserialize.h">
+      <Filter>src\Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="vec.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="weight.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\matrix.h">
+      <Filter>core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bonenode.cpp">
+      <Filter>src\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\meshnode.cpp">
+      <Filter>src\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\node.cpp">
+      <Filter>src\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fbxdevice.cpp">
+      <Filter>src\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fbxcore.cpp">
+      <Filter>src\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Common.cxx" />
+    <ClCompile Include="src\clusternode.cpp">
+      <Filter>src\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\materialnode.cpp">
+      <Filter>src\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fbxcast.cpp">
+      <Filter>src\Fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\jsoncpp.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="serialize.cpp">
+      <Filter>src\Serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="jsonserialize.cpp">
+      <Filter>src\Serialize</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
