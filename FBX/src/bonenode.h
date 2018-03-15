@@ -2,7 +2,7 @@
 
 #include <nodetree.h>
 #include <string>
-#include <matrix4x4.h>
+#include <matrix.h>
 
 
 class BoneNode : public NodeTreeItem<BoneNode>
@@ -14,11 +14,11 @@ public:
 	void					SetName(const std::string &name);
 	const std::string&		GetName() const;
 
-	const Matrix4x4&		GetLocalTransform() const;
-	void					SetLocalTransform(const Matrix4x4 &transform);
+	const Matrix&			GetLocalTransform() const;
+	void					SetLocalTransform(const Matrix &transform);
 private:
 
 	std::string				mName;
-	Matrix4x4				mLocal;
+	Matrix				mLocal;
 };
 

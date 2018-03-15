@@ -1,8 +1,8 @@
 #pragma once
 
 #include <config.h>
-#include <vec2f.h>
-#include <vec3f.h>
+#include <Vec2f.h>
+#include <Vec3f.h>
 
 class Face
 {

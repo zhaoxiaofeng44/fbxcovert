@@ -152,7 +152,7 @@
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\core;$(ProjectDir)\src;$(SolutionDir)\include;$(SolutionDir)\include\imgui;$(SolutionDir)\include\GLEngine;C:\Program Files (x86)\Visual Leak Detector\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\core;$(ProjectDir);$(ProjectDir)\src;$(SolutionDir)\include;$(SolutionDir)\include\imgui;$(SolutionDir)\include\GLEngine;C:\Program Files (x86)\Visual Leak Detector\include</AdditionalIncludeDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OmitFramePointers>false</OmitFramePointers>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>

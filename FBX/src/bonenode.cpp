@@ -23,12 +23,12 @@ const std::string& BoneNode::GetName() const
 	return mName;
 }
 
-const Matrix4x4& BoneNode::GetLocalTransform() const
+const Matrix& BoneNode::GetLocalTransform() const
 {
 	return mLocal;
 }
 
-void BoneNode::SetLocalTransform(const Matrix4x4 &transform)
+void BoneNode::SetLocalTransform(const Matrix &transform)
 {
 	mLocal = transform;
 }

@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef TEST
+
+
+
 #include <vml.h>
 #include <assert.h>
 #include <vec3f.h>
@@ -905,3 +909,4 @@ namespace vml
 }
 
 
+#endif // TEST

@@ -98,9 +98,9 @@ public:
 	inline Vec3f getS() const
 	{
 		Vec3f s;
-		s[0] = vec3f(mArr[0], mArr[4], mArr[8]).length();
-		s[1] = vec3f(mArr[1], mArr[5], mArr[9]).length();
-		s[2] = vec3f(mArr[2], mArr[6], mArr[10]).length();
+		s[0] = Vec3f(mArr[0], mArr[4], mArr[8]).length();
+		s[1] = Vec3f(mArr[1], mArr[5], mArr[9]).length();
+		s[2] = Vec3f(mArr[2], mArr[6], mArr[10]).length();
 		return s;
 	}
 
@@ -116,6 +116,7 @@ public:
 		// No projection term
 		mArr[12] = 0; mArr[13] = 0; mArr[14] = 0; mArr[15] = 1;
 	}
+
 
 };
 

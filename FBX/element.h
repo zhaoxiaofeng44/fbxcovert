@@ -1,6 +1,6 @@
 #pragma once
 #include <config.h>
-#include <vec2f.h>
+#include <vec.h>
 #include <vec3f.h>
 #include <vec4f.h>
 
@@ -58,6 +58,6 @@ inline std::vector<T>& Element<T>::GetSTs()
 	return mSTs;
 }
 
-typedef  Element<vec2f> ElementVec2f;
-typedef  Element<vec3f> ElementVec3f;
-typedef  Element<vec4f> ElementVec4f;
+typedef  Element<Vec2f> ElementVec2f;
+typedef  Element<Vec3f> ElementVec3f;
+typedef  Element<Vec4f> ElementVec4f;

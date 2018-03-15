@@ -5,7 +5,7 @@
 #include <point.h>
 #include <weight.h>
 #include <vector>
-#include <matrix4x4.h>
+#include <matrix.h>
 
 class ClusterNode
 {
@@ -22,11 +22,11 @@ public:
 	std::vector<Weight>&	GetWeights();
 	void                    AddWeight(const int& index, const float& weight);
 
-	const Matrix4x4&		GetTransformMatrix() const;
-	void					SetTransformMatrix(const Matrix4x4 &transform);
+	const Matrix&		GetTransformMatrix() const;
+	void					SetTransformMatrix(const Matrix &transform);
 
-	const Matrix4x4&		GetLinkTransformLinkMatrix() const;
-	void					SetLinkTransformLinkMatrix(const Matrix4x4 &transform);
+	const Matrix&		GetLinkTransformLinkMatrix() const;
+	void					SetLinkTransformLinkMatrix(const Matrix &transform);
 
 private:
 
@@ -35,6 +35,6 @@ private:
 
 	std::vector<Weight>				mWeights;
 
-	Matrix4x4						mMatrix;
-	Matrix4x4						mLinkMatrix;
+	Matrix						mMatrix;
+	Matrix						mLinkMatrix;
 };

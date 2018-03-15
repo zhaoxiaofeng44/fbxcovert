@@ -103,7 +103,7 @@ BoneNode* FBXCore::ProcessBoneNode(FbxNode* pNode, BoneNode* parent)
 	FbxVector4 R = pNode->LclRotation.Get();
 	FbxVector4 S = pNode->LclScaling.Get();
 	localTRS.SetTRS(T, R, S);
-	boneNode->SetLocalTransform(Matrix4x4(localTRS));
+	boneNode->SetLocalTransform(FBXCast::cast(localTRS));
 
 	//TODO : REPLACE TAKE ANIMATION
 	/*------------------------ ANIMATION LAYER SAMPLE ------------------------------*/
@@ -182,8 +182,8 @@ TextureNode createTexture(FbxFileTexture *texture) {
 		texture->GetName(),
 		texture->GetFileName(),
 		uvSet,
-		vec2f(uvScale[0], uvScale[1]),
-		vec2f(uvTranslation[0], uvTranslation[1])
+		Vec2f(uvScale[0], uvScale[1]),
+		Vec2f(uvTranslation[0], uvTranslation[1])
 	};
 }
 
@@ -212,7 +212,7 @@ void addTextures(std::vector<TextureNode> &textures, const FbxProperty &prop) {
 	}
 }
 
-void addMaterialProp(MaterialNode &material,std::string type,float opacity, const vec3f &color, const FbxProperty &prop) {
+void addMaterialProp(MaterialNode &material,std::string type,float opacity, const Vec3f &color, const FbxProperty &prop) {
 
 	if (prop.IsValid()) {
 		std::vector<TextureNode> textures;
@@ -248,7 +248,7 @@ MeshNode* FBXCore::ProcessMeshNode(FbxNode *pNode, MeshNode *parent)
 	FbxVector4 S = pNode->LclScaling.Get();
 	localTRS.SetTRS(T, R, S);
 
-	meshNode->SetLocalTransform(Matrix4x4(localTRS));
+	meshNode->SetLocalTransform(FBXCast::cast(localTRS));
 
 	BuildMaterial(pNode, meshNode);
 	BuildMeshNode(pMesh, meshNode);
@@ -326,7 +326,7 @@ void FBXCore::BuildMeshNode(FbxMesh* pMesh, MeshNode* meshNode)
 	for (unsigned int vertexIndex = 0; vertexIndex < vertexNum; ++vertexIndex)
 	{
 		auto &point = contolPoints[vertexIndex];
-		points[vertexIndex].SetPosition(vec3f(point[0], point[1], point[2]));
+		points[vertexIndex].SetPosition(Vec3f(point[0], point[1], point[2]));
 	}
 
 	auto& faces = meshNode->GetFaces(faceNums);
@@ -355,13 +355,13 @@ void FBXCore::BuildMeshNode(FbxMesh* pMesh, MeshNode* meshNode)
 			for (auto index = 0; index < nmCount; ++index) {
 				auto eST = pMesh->GetElementNormal(index);
 				sNormals[index].SetName(eST->GetName());
-				sNormals[index].SetST(vertexIndex, FBXCast::ConvertFromElement<FbxLayerElementTemplate<FbxVector4>, vec4f>(eST, vertexIndex));
+				sNormals[index].SetST(vertexIndex, FBXCast::ConvertFromElement<FbxLayerElementTemplate<FbxVector4>, Vec4f>(eST, vertexIndex));
 			}
 			//uv
 			for (auto index = 0; index < uvCount; ++index) {
 				auto eST = pMesh->GetElementUV(index);
 				sUvs[index].SetName(eST->GetName());
-				sUvs[index].SetST(vertexIndex, FBXCast::ConvertFromElement<FbxLayerElementTemplate<FbxVector2>, vec2f>(eST, vertexIndex));
+				sUvs[index].SetST(vertexIndex, FBXCast::ConvertFromElement<FbxLayerElementTemplate<FbxVector2>, Vec2f>(eST, vertexIndex));
 			}	
 		}
 	}
@@ -420,12 +420,12 @@ void FBXCore::BuildMeshSkin(FbxMesh* pMesh, MeshNode* meshNode)
 			//transform
 			FbxAMatrix tMat;
 			pCluster->GetTransformMatrix(tMat);
-			bCluster.SetTransformMatrix(Matrix4x4(tMat));
+			bCluster.SetTransformMatrix(FBXCast::cast(tMat));
 
 			//link
 			FbxAMatrix tLinkMat;
 			pCluster->GetTransformLinkMatrix(tLinkMat);
-			bCluster.SetLinkTransformLinkMatrix(Matrix4x4(tLinkMat));
+			bCluster.SetLinkTransformLinkMatrix(FBXCast::cast(tLinkMat));
 
 			//weigtht
 			const int ClusterIndicesNum = pCluster->GetControlPointIndicesCount();

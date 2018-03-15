@@ -1,22 +1,22 @@
 #pragma once
-#include <vec3f.h>
+#include <vec.h>
 #include <config.h>
 
 class Point
 {
 public:
-	const vec3f&	GetPosition() const;
-	void			SetPosition(const vec3f &pos);
+	const Vec3f&	GetPosition() const;
+	void			SetPosition(const Vec3f &pos);
 private:
-	vec3f			mPosition;
+	Vec3f			mPosition;
 };
 
-inline void Point::SetPosition(const vec3f &pos)
+inline void Point::SetPosition(const Vec3f &pos)
 {
 	mPosition= pos;
 }
 
-inline const vec3f& Point::GetPosition() const
+inline const Vec3f& Point::GetPosition() const
 {
 	return mPosition;
 }

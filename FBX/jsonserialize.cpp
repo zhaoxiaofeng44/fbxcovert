@@ -17,25 +17,22 @@
 #include"vec.h"
 #include"matrix.h"
 
-vec2i* vec2i::pZero = new vec2i();
-vec2f* vec2f::pZero = new vec2f();
-vec3f* vec3f::pZero = new vec3f();
-vec4f* vec4f::pZero = new vec4f();
-Json::Value serialize(const vec2f &v)
+
+Json::Value serialize(const Vec2f &v)
 {
 	Json::Value value;
-	value.append(v.x);
-	value.append(v.y);
+	value.append(v[0]);
+	value.append(v[1]);
 	return value;
 }
 
-void serialize(vec2f &v, const Json::Value &value)
+void serialize(Vec2f &v, const Json::Value &value)
 {
-	v.x = value[0].asFloat();
-	v.y = value[1].asFloat();
+	v[0] = value[0].asFloat();
+	v[1] = value[1].asFloat();
 }
 
-Json::Value serialize(const vec3f &v)
+Json::Value serialize(const Vec3f &v)
 {
 	Json::Value value;
 	value.append(v[0]);
@@ -44,110 +41,54 @@ Json::Value serialize(const vec3f &v)
 	return value;
 }
 
-void serialize(vec3f &v, const Json::Value &value)
+void serialize(Vec3f &v, const Json::Value &value)
 {
-	v.x = value[0].asFloat();
-	v.y = value[1].asFloat();
-	v.z = value[2].asFloat();
+	v[0] = value[0].asFloat();
+	v[1] = value[1].asFloat();
+	v[2] = value[2].asFloat();
 }
 
-Json::Value serialize(const vec4f &v)
+Json::Value serialize(const Vec4f &v)
 {
 	Json::Value value;
-	value.append(v.x);
-	value.append(v.y);
-	value.append(v.z);
-	value.append(v.w);
+	value.append(v[0]);
+	value.append(v[1]);
+	value.append(v[2]);
+	value.append(v[3]);
 	return value;
 }
 
-void serialize(vec4f &v, const Json::Value &value)
+void serialize(Vec4f &v, const Json::Value &value)
 {
-	v.x = value[0].asFloat();
-	v.y = value[1].asFloat();
-	v.z = value[2].asFloat();
-	v.w = value[3].asFloat();
+	v[0] = value[0].asFloat();
+	v[1] = value[1].asFloat();
+	v[2] = value[2].asFloat();
+	v[3] = value[3].asFloat();
 }
 
-Json::Value serialize(const Quaternion &v)
+
+Json::Value serialize(const Matrix &m)
 {
 	Json::Value value;
-	value.append(v.v[0]);
-	value.append(v.v[1]);
-	value.append(v.v[2]);
-	value.append(v.w);
+	value["translation"] = serialize(m.getT());
+	value["quaternion"] = serialize(m.getQ());
+	value["scale"] = serialize(m.getS());
 	return value;
 }
 
-void serialize(Quaternion &v, const Json::Value &value)
+void serialize(Matrix &matrix, const Json::Value &value)
 {
-	v.v[0] = value[0].asFloat();
-	v.v[1] = value[1].asFloat();
-	v.v[2] = value[2].asFloat();
-	v.w	= value[3].asFloat();
-}
 
-Json::Value serialize(const Matrix4x4 &matrix)
-{
-	fbxsdk::FbxAMatrix m;
-	matrix.copy(m);
-
-	Json::Value value;
-	/*value["translation"] = serialize(matrix.getTransform());
-	value["quaternion"] = serialize(matrix.getQuaternion());
-	value["scale"] = serialize(matrix.getScale());
-	for (int index = 0; index < 16; index++)
-	{
-		//value.append(matrix.mData[index]);
-	}*/
-
-	value["translation"] = serialize(FBXCast::cast(m.GetT()));
-	value["quaternion"] = serialize(FBXCast::cast(m.GetR()));
-	value["scale"] = serialize(FBXCast::cast(m.GetS()));
-	return value;
-}
-
-void serialize(Matrix4x4 &matrix, const Json::Value &value)
-{
-	/*Quaternion q;
-	serialize(q, value["quaternion"]);
-
-	vec4f t;
-	serialize(t, value["translation"]);
-
-	vec4f s;
-	serialize(s, value["scale"]);*/
-
-	/*Matrix m;
-	m.setTRS(Vec3f(t.x, t.y, t.z), Quat4f(q.v.x, q.v.y, q.v.z, q.w), Vec3f(s.x, s.y, s.z));
-	matrix.copy(m.get());*/
-
-
-	Quaternion quaternion;
+	Quat4f quaternion;
 	serialize(quaternion, value["quaternion"]);
 
-	vec4f translation;
+	Vec3f translation;
 	serialize(translation, value["translation"]);
 
-	vec4f scale;
+	Vec3f scale;
 	serialize(scale, value["scale"]);
 
-	fbxsdk::FbxAMatrix m;
-	m.SetT(FbxVector4(translation.x, translation.y, translation.z, translation.w));
-	m.SetR(FbxVector4(quaternion.v.x, quaternion.v.y, quaternion.v.z, quaternion.w));
-	m.SetS(FbxVector4(scale.x, scale.y, scale.z, scale.w));
-
-
-	Matrix cc;
-
-	cc.setTRS(Vec3f(), Quat4f(), Vec3f());
-	Matrix4x4 m44;
-	for (int index = 0; index < 16; index++)
-	{
-		m44.mData[index] = m[index/4][index %4];
-		//value.append(matrix.mData[index]);
-	}
-	matrix = m44;
+	matrix.setTRS(translation, quaternion, scale);
 }
 
 Json::Value serialize(const Point &point)
@@ -157,7 +98,7 @@ Json::Value serialize(const Point &point)
 
 void serialize(Point &point, const Json::Value &value)
 {
-	vec3f position;
+	Vec3f position;
 	serialize(position, value);
 	point.SetPosition(position);
 }
@@ -217,7 +158,7 @@ void serialize(ElementVec2f &element2f, const Json::Value &value)
 	auto& arr = value["array"];
 	for (auto index = 0; index < arr.size(); ++index)
 	{
-		vec2f v;
+		Vec2f v;
 		serialize(v, arr[index]);
 		element2f.SetST(index, v);
 	}
@@ -243,7 +184,7 @@ void serialize(ElementVec4f &element4f, const Json::Value &value)
 	auto& arr = value["array"];
 	for (auto index = 0; index < arr.size(); ++index)
 	{
-		vec4f v;
+		Vec4f v;
 		serialize(v, arr[index]);
 		element4f.SetST(index, v);
 	}
@@ -325,9 +266,9 @@ void serialize(Node *node, BoneNode* parent,const Json::Value &value)
 	BoneNode* bone = new BoneNode();
 	bone->SetName(value["name"].asString());
 
-	Matrix4x4 matrix4x4;
-	serialize(matrix4x4, value["transform"]);
-	bone->SetLocalTransform(matrix4x4);
+	Matrix matrix;
+	serialize(matrix, value["transform"]);
+	bone->SetLocalTransform(matrix);
 
 	for (auto &jChild : value["children"])
 	{
@@ -418,9 +359,9 @@ void JsonSerialize::Get(Node *Src)
 		MeshNode* mesh = new MeshNode;
 		mesh->SetName(jsonMesh["name"].asString());
 
-		Matrix4x4 matrix4x4;
-		serialize(matrix4x4, jsonMesh["transform"]);
-		mesh->SetLocalTransform(matrix4x4);
+		Matrix matrix;
+		serialize(matrix, jsonMesh["transform"]);
+		mesh->SetLocalTransform(matrix);
 
 		for (auto &jsonMaterial : jsonMesh["materials"])
 		{
@@ -469,11 +410,11 @@ void JsonSerialize::Get(Node *Src)
 			cluster.SetName(jsonCluster["name"].asString());
 			cluster.SetLinkName(jsonCluster["linkName"].asString());
 
-			Matrix4x4 transform;
+			Matrix transform;
 			serialize(transform, jsonCluster["transform"]);
 			cluster.SetTransformMatrix(transform);
 
-			Matrix4x4 linkTransform;
+			Matrix linkTransform;
 			serialize(linkTransform, jsonCluster["linkTransform"]);
 			cluster.SetLinkTransformLinkMatrix(linkTransform);
 

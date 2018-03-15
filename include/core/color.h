@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <memory>
-
+#ifdef TEST
 class Color
 {
 public:
@@ -193,3 +193,6 @@ inline Color Color::gamma(const Color &c, float gamma)
 }
 
 typedef std::unique_ptr<Color[]> ColorPtr;
+
+
+#endif

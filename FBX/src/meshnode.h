@@ -4,7 +4,7 @@
 #include <face.h>
 #include <point.h>
 #include <element.h>
-#include <matrix4x4.h>
+#include <matrix.h>
 #include <clusternode.h>
 #include <materialnode.h>
 
@@ -25,8 +25,8 @@ public:
 	std::vector<ElementVec2f>&		GetUVs(int size = -1);
 	std::vector<ElementVec4f>&		GetNormals(int size = -1);
 
-	const Matrix4x4&				GetLocalTransform() const;
-	void							SetLocalTransform(const Matrix4x4 &transform);
+	const Matrix&				GetLocalTransform() const;
+	void							SetLocalTransform(const Matrix &transform);
 
 	ClusterNode&					NewClusterNode();
 	std::vector<ClusterNode>&		GetClusterNodes();
@@ -43,8 +43,8 @@ private:
 	std::vector<ElementVec2f> mUVs;
 	std::vector<ElementVec4f> mNormals;
 
-	Matrix4x4				  mGlobal;
-	Matrix4x4				  mLocal;
+	Matrix				  mGlobal;
+	Matrix				  mLocal;
 
 	std::vector<ClusterNode>  mClusterNodes;
 	std::vector<MaterialNode> mMaterialNodes;

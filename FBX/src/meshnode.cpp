@@ -62,12 +62,12 @@ std::vector<ElementVec4f>& MeshNode::GetNormals(int size)
 	return mNormals;
 }
 
-const Matrix4x4& MeshNode::GetLocalTransform() const
+const Matrix& MeshNode::GetLocalTransform() const
 {
 	return mLocal;
 }
 
-void MeshNode::SetLocalTransform(const Matrix4x4 &transform)
+void MeshNode::SetLocalTransform(const Matrix &transform)
 {
 	mLocal = transform;
 }

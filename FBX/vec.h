@@ -52,13 +52,27 @@ public:
 		}
 	}
 
+	inline void set(T* v, int size)
+	{
+		for (int i = 0; i < tSize; i++)
+		{
+			set(i, i >= size ? (T)0 : v[i]);
+		}
+	}
+
 	template<typename... T2>
 	inline void set(int i, T v, T2 ...arg)
 	{
 		if (i < tSize) {
-			mArr[i] = v;
+			set(i, v);
 			set(i + 1, arg ...);
 		}
+	}
+
+	template<int vSize >
+	inline void set(const Vec<T,vSize> &v)
+	{
+		set(v.get(), vSize);
 	}
 
 	inline T* get()
@@ -91,14 +105,16 @@ public:
 		return true;
 	}
 
-	inline Vec & operator =(const Vec &other) const
+	template<int vSize>
+	inline Vec & operator =(const Vec<T, vSize> &other) const
 	{
-		return *this = other;
+		set(other);
+		return *this;
 	}
 
-	inline Number length2() const
+	inline T length2() const
 	{
-		Number sum = 0;
+		T sum = 0;
 		for (int i = 0; i < tSize; i++)
 		{
 			sum += mArr[i] * mArr[i];
@@ -106,14 +122,21 @@ public:
 		return sum;
 	}
 
-	inline Number length() const
+	inline T length() const
 	{
 		return std::sqrt(length2());
 	}
 
+	static Vec<T, 0> zero() {
+		
+		static Vec<T, 0> _zero;
+		return _zero;
+	};
+
 protected :
 	T mArr[tSize];
 };
+
 
 typedef Vec<Number, 2> Vec2f;
 typedef Vec<Number, 3> Vec3f;

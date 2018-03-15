@@ -38,22 +38,22 @@ std::vector<Weight>& ClusterNode::GetWeights()
 	return mWeights;
 }
 		
-const Matrix4x4& ClusterNode::GetTransformMatrix() const
+const Matrix& ClusterNode::GetTransformMatrix() const
 {
 	return mMatrix;
 }
 
-void ClusterNode::SetTransformMatrix(const Matrix4x4 &transform)
+void ClusterNode::SetTransformMatrix(const Matrix &transform)
 {
 	mMatrix = transform;
 }
 
-const Matrix4x4& ClusterNode::GetLinkTransformLinkMatrix() const
+const Matrix& ClusterNode::GetLinkTransformLinkMatrix() const
 {
 	return mLinkMatrix;
 }
 
-void ClusterNode::SetLinkTransformLinkMatrix(const Matrix4x4 &transform)
+void ClusterNode::SetLinkTransformLinkMatrix(const Matrix &transform)
 {
 	mLinkMatrix = transform;
 }

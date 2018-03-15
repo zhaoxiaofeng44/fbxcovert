@@ -5,17 +5,11 @@
 #include <bonenode.h>
 #include "Common.h"
 
+#include <fbxcast.h>
 #include <fbxcore.h>
 #include <fbxsdk.h>
 
 #include <jsonserialize.h>
-
-fbxsdk::FbxAMatrix Cast(const Matrix4x4 &m) {
-
-	fbxsdk::FbxAMatrix mat;
-	m.copy(mat);
-	return mat;
-}
 
 
 void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::map<FbxCluster*,std::string> &fbxClusters) {
@@ -28,7 +22,7 @@ void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::m
 		lNode->SetShadingMode(FbxNode::eTextureShading);
 		rootNode->AddChild(lNode);
 
-		auto lclMatrix = Cast(node->GetLocalTransform());
+		auto lclMatrix = FBXCast::cast(node->GetLocalTransform());
 		lNode->LclScaling.Set(lclMatrix.GetS());
 		lNode->LclRotation.Set(lclMatrix.GetR());
 		lNode->LclTranslation.Set(lclMatrix.GetT());
@@ -91,15 +85,15 @@ void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::m
 
 				//position
 				auto &positon = point.GetPosition();
-				lMesh->SetControlPointAt({ positon.x, positon.y, positon.z, 0 }, index);
+				lMesh->SetControlPointAt({ positon[0], positon[1], positon[2], 0 }, index);
 
 				//normal
 				auto &normal = normals.GetST(index);
-				pNormalElement->GetDirectArray().SetAt(index, { normal.x, normal.y, normal.z, 0 });
+				pNormalElement->GetDirectArray().SetAt(index, { normal[0], normal[1], normal[2], 0 });
 
 				//uv
 				auto &uv = uvs.GetST(index);
-				m_pUVElement->GetDirectArray().SetAt(index, { uv.x, uv.y });
+				m_pUVElement->GetDirectArray().SetAt(index, { uv[0], uv[1] });
 			}
 			lMesh->EndPolygon();
 		}
@@ -109,8 +103,8 @@ void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::m
 		{
 			FbxCluster *lCluster = FbxCluster::Create(scene, "");
 			lCluster->SetLinkMode(FbxCluster::eTotalOne);
-			lCluster->SetTransformMatrix(Cast(cluster.GetTransformMatrix()));
-			lCluster->SetTransformLinkMatrix(Cast(cluster.GetLinkTransformLinkMatrix()));
+			lCluster->SetTransformMatrix(FBXCast::cast(cluster.GetTransformMatrix()));
+			lCluster->SetTransformLinkMatrix(FBXCast::cast(cluster.GetLinkTransformLinkMatrix()));
 
 			auto &weights = cluster.GetWeights();
 			for (auto n = 0; n < weights.size(); n++)
@@ -135,7 +129,7 @@ void onObtainNode(BoneNode *boneNode, FbxScene* scene, FbxNode* parent, std::map
 		lSkeletonNode->SetNodeAttribute(lSkeleton);
 		parent->AddChild(lSkeletonNode);
 
-		auto lclMatrix = Cast(node->GetLocalTransform());
+		auto lclMatrix = FBXCast::cast(node->GetLocalTransform());
 		lSkeletonNode->LclScaling.Set(lclMatrix.GetS());
 		lSkeletonNode->LclRotation.Set(lclMatrix.GetR());
 		lSkeletonNode->LclTranslation.Set(lclMatrix.GetT());
@@ -232,6 +226,27 @@ int main(int argc, char* argv[])
 	matrix.translate(vec3f(t[0], t[1], t[2]));
 	matrix.scale(vec3f(s[0], s[1], s[2]));*/
 
+
+
+
+	fbxsdk::FbxAMatrix ccf;
+	ccf.SetTQS(FbxVector4(22, 0, 0, 0), FbxQuaternion(1, 0, 0, 0.3), FbxVector4(1, 1, 1, 1));
+
+	auto cct = ccf.GetT();
+	auto ccq = ccf.GetQ();
+	auto ccs = ccf.GetS();
+	auto ccr = ccf.GetR();
+
+
+	Matrix ddm;
+	ddm.setTRS(Vec3f(22, 0, 0), Quat4f(1, 0, 0, 0.3), Vec3f(1, 1, 1));
+
+	auto ddt = ddm.getT();
+	auto ddq = ddm.getQ();
+	auto dds = ddm.getS();
+
+
+	
 
 	FBXCore core("Guard.FBX");
 	core.mNode;

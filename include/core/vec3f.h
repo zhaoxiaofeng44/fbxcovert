@@ -1,6 +1,6 @@
 
 #pragma once
-
+#ifdef TEST
 #include <vml.h>
 #include <algorithm>
 #include <assert.h>
@@ -285,3 +285,4 @@ inline std::ostream& operator<<(std::ostream &o, const vec3f &v)
 	o << "vec3( " << v.x << ", " << v.y << " ," << v.z << ')';
 	return o;
 }
+#endif // TEST

@@ -4,6 +4,7 @@
 #include <face.h>
 #include <point.h>
 #include <vector>
+#include <vec.h>
 #include <matrix4x4.h>
 #include <clusternode.h>
 
@@ -12,15 +13,15 @@ typedef struct _TextureNode
 	std::string name;
 	std::string filename;
 	std::string uvSet;
-	vec2f uvScale;
-	vec2f uvTranslation;
+	Vec2f uvScale;
+	Vec2f uvTranslation;
 } TextureNode;
 
 class MaterialPropNode
 {
 public:
 	std::string type;
-	vec3f	color;
+	Vec3f	color;
 	float	opacity;
 	std::vector<TextureNode> textures;
 

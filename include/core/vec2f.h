@@ -1,5 +1,5 @@
 #pragma once
-
+#ifdef TEST
 #include <algorithm>
 #include <iostream>
 
@@ -98,3 +98,4 @@ public:
 	}
 	static vec2f *pZero;
 };
+#endif // TEST

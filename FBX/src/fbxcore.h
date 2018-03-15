@@ -1,6 +1,5 @@
 #pragma once
 #include <fbxsdk.h>
-#include <vec2f.h>
 #include <vec3f.h>
 #include <vec4f.h>
 #include <matrix4x4.h>

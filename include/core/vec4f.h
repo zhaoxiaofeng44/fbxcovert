@@ -1,5 +1,5 @@
 #pragma once
-
+#ifdef TEST
 #include <algorithm>
 #include <iostream>
 
@@ -24,3 +24,4 @@ inline std::ostream& operator<<(std::ostream &o, const vec4f &v)
 	return o;
 }
 
+#endif // TEST

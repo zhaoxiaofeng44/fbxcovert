@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#ifdef TEST
 #include <vml.h>
 #include <vec3f.h>
 //#include <matrix4x4.h>
@@ -288,3 +288,5 @@ inline void Quaternion::Interpolate(Quaternion& result, const Quaternion& start,
 	result.v.z = sclp * start.v.z + sclq * newEnd.v.z;
 	result.w = sclp * start.w + sclq * newEnd.w;
 }
+
+#endif // TEST
