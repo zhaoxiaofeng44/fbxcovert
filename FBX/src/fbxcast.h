@@ -18,27 +18,6 @@ class FBXCast
 {
 public:
 	
-	/*static inline Vec2f cast(FbxDouble2 v)
-	{
-		return Vec2f(v[0],v[1]);
-	}
-
-	static inline vec3f cast(FbxDouble3 v)
-	{
-		return vec3f(v[0], v[1], v[2]);
-	}
-
-	static inline vec4f cast(FbxDouble4 v)
-	{
-		return vec4f(v[0], v[1], v[2], v[3]);
-	}
-
-	static inline FbxDouble4 cast(vec4f v)
-	{
-		return FbxDouble4(v.x, v.y, v.z, v.w);
-	}*/
-
-
 	static inline Vec2f cast(FbxDouble2 v)
 	{
 		return Vec2f(v[0], v[1]);

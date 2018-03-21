@@ -70,9 +70,9 @@ void serialize(Vec4f &v, const Json::Value &value)
 Json::Value serialize(const Matrix &m)
 {
 	Json::Value value;
-	value["translation"] = serialize(m.getT());
-	value["quaternion"] = serialize(m.getQ());
-	value["scale"] = serialize(m.getS());
+	value["translation"] = serialize(Vec4f(m.getT()));
+	value["quaternion"] = serialize(Vec4f(m.getQ()));
+	value["scale"] = serialize(Vec4f(m.getS()));
 	return value;
 }
 
@@ -82,10 +82,10 @@ void serialize(Matrix &matrix, const Json::Value &value)
 	Quat4f quaternion;
 	serialize(quaternion, value["quaternion"]);
 
-	Vec3f translation;
+	Vec4f translation;
 	serialize(translation, value["translation"]);
 
-	Vec3f scale;
+	Vec4f scale;
 	serialize(scale, value["scale"]);
 
 	matrix.setTRS(translation, quaternion, scale);
