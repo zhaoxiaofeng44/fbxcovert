@@ -2,6 +2,7 @@
 
 #include <nodetree.h>
 #include <string>
+#include <map>
 #include <matrix.h>
 
 
@@ -16,9 +17,15 @@ public:
 
 	const Matrix&			GetLocalTransform() const;
 	void					SetLocalTransform(const Matrix &transform);
+
+	const Matrix&			GetAnimTransform(int frame);
+	void					SetAnimTransform(int frame, const Matrix &transform);
 private:
 
 	std::string				mName;
-	Matrix				mLocal;
+	Matrix					mLocal;
+
+	std::map<int, Matrix>   mAnims;
+
 };
 

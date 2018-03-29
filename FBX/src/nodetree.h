@@ -8,14 +8,19 @@ class NodeTree
 {
 public:
 
-	NodeTree::NodeTree()
+	NodeTree()
 	{
 		mRoot = NULL;
 		mEnd = NULL;
 		count = 0;
 	};
 
-	virtual NodeTree::~NodeTree()
+	virtual ~NodeTree()
+	{
+		Clear();
+	};
+
+	virtual void Clear()
 	{
 		for (T *type = mRoot; type != NULL; )
 		{
@@ -24,8 +29,7 @@ public:
 			delete temp;
 		}
 		count = 0;
-	};
-
+	}
 
 	virtual T* GetRoot()
 	{

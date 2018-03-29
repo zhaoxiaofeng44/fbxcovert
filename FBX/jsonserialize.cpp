@@ -277,7 +277,7 @@ void serialize(Node *node, BoneNode* parent,const Json::Value &value)
 	node->AddChildBoneNode(parent, bone);
 }
 
-
+/*
 void JsonSerialize::Set(Node *Src)
 {
 	Json::Value root;
@@ -438,25 +438,191 @@ void JsonSerialize::Get(Node *Src)
 
 void JsonSerialize::Save(std::string name)
 {
-	std::ofstream out(name);
-	if (out.is_open())
-	{
-		out << mJsonValue.toStyledString();
-		out.close();
-	}
+	
 }
 
 void JsonSerialize::Read(std::string name)
 {
+	
+}
+*/
+
+Node * JsonSerialize::Get(const std::string & name)
+{
 	Json::Reader reader;
-	std::string strJson;
+	Json::Value mJsonValue;
 	std::ifstream cin(name);
 	if (cin.is_open())
 	{
 		if (!reader.parse(cin, mJsonValue, false))
 		{
 			mJsonValue.clear();
+			return NULL;
 		}
 		cin.close();
+	}
+
+	mNode.Clear();
+	for (auto &jsonMesh : mJsonValue["meshes"]) {
+
+		MeshNode* mesh = new MeshNode;
+		mesh->SetName(jsonMesh["name"].asString());
+
+		Matrix matrix;
+		serialize(matrix, jsonMesh["transform"]);
+		mesh->SetLocalTransform(matrix);
+
+		for (auto &jsonMaterial : jsonMesh["materials"])
+		{
+			auto &material = mesh->NewMaterialNode();
+			material.SetName(jsonMaterial["name"].asString());
+
+			for (auto &jsonProp : jsonMaterial["props"]) {
+				MaterialPropNode prop;
+				serialize(prop, jsonProp);
+				material.SetPropNode(prop);
+			}
+		}
+
+
+		auto& jsonPoints = jsonMesh["points"];
+		auto& points = mesh->GetPoints(jsonPoints.size());
+		for (auto index = 0; index < jsonPoints.size(); ++index)
+		{
+			serialize(points[index], jsonPoints[index]);
+		}
+
+		auto& jsonFaces = jsonMesh["faces"];
+		auto& faces = mesh->GetFaces(jsonFaces.size());
+		for (auto index = 0; index < jsonFaces.size(); ++index)
+		{
+			serialize(faces[index], jsonFaces[index]);
+		}
+
+		auto& jsonUvs = jsonMesh["uvs"];
+		auto& uvs = mesh->GetUVs(jsonUvs.size());
+		for (auto index = 0; index < jsonUvs.size(); ++index)
+		{
+			serialize(uvs[index], jsonUvs[index]);
+		}
+
+		auto& jsonNormals = jsonMesh["normals"];
+		auto& normals = mesh->GetNormals(jsonNormals.size());
+		for (auto index = 0; index < jsonNormals.size(); ++index)
+		{
+			serialize(normals[index], jsonNormals[index]);
+		}
+
+		for (auto &jsonCluster : jsonMesh["clusters"]) {
+
+			auto& cluster = mesh->NewClusterNode();
+			cluster.SetName(jsonCluster["name"].asString());
+			cluster.SetLinkName(jsonCluster["linkName"].asString());
+
+			Matrix transform;
+			serialize(transform, jsonCluster["transform"]);
+			cluster.SetTransformMatrix(transform);
+
+			Matrix linkTransform;
+			serialize(linkTransform, jsonCluster["linkTransform"]);
+			cluster.SetLinkTransformLinkMatrix(linkTransform);
+
+			auto& jsonWeights = jsonCluster["weights"];
+			for (auto n = 0; n < jsonWeights.size(); n++)
+			{
+				Weight w;
+				serialize(w, jsonWeights[n]);
+				cluster.AddWeight(w.GetIndex(), w.GetWeight());
+			}
+		}
+		mNode.AddChildMeshNode(NULL, mesh);
+	}
+
+	for (auto &jsonBone : mJsonValue["bones"])
+	{
+		serialize(&mNode, NULL, jsonBone);
+	}
+	return &mNode;
+}
+
+void JsonSerialize::Set(const std::string &name)
+{
+	Json::Value root;
+	for (MeshNode* mesh = mNode.GetMeshNodeRoot(); mesh != NULL; mesh = mesh->mNext)
+	{
+		Json::Value jsonMesh;
+		jsonMesh["name"] = mesh->GetName();
+		jsonMesh["transform"] = serialize(mesh->GetLocalTransform());
+
+		for (auto &material : mesh->GetMaterialNodes())
+		{
+			Json::Value jsonMaterial;
+			jsonMaterial["name"] = material.GetName();
+			for (auto &prop : material.GetPropNodes()) {
+				jsonMaterial["props"].append(serialize(prop));
+			}
+			jsonMesh["materials"].append(jsonMaterial);
+		}
+
+		auto& points = mesh->GetPoints();
+		for (auto pointIndex = 0; pointIndex < points.size(); ++pointIndex)
+		{
+			auto &point = points[pointIndex];
+			jsonMesh["points"].append(serialize(point));
+		}
+
+		auto& faces = mesh->GetFaces();
+		for (auto faceIndex = 0; faceIndex < faces.size(); ++faceIndex)
+		{
+			auto &face = faces[faceIndex];
+			jsonMesh["faces"].append(serialize(face));
+		}
+
+		auto& uvs = mesh->GetUVs();
+		for (auto index = 0; index < uvs.size(); ++index)
+		{
+			auto &uv = uvs[index];
+			jsonMesh["uvs"].append(serialize(uv));
+		}
+
+		auto& normals = mesh->GetNormals();
+		for (auto index = 0; index < normals.size(); ++index)
+		{
+			auto &normal = normals[index];
+			jsonMesh["normals"].append(serialize(normal));
+		}
+
+		for (auto& cluster : mesh->GetClusterNodes())
+		{
+			Json::Value jsonCluster;
+			jsonCluster["name"] = cluster.GetName();
+			jsonCluster["linkName"] = cluster.GetLinkName();
+			jsonCluster["transform"] = serialize(cluster.GetTransformMatrix());
+			jsonCluster["linkTransform"] = serialize(cluster.GetLinkTransformLinkMatrix());
+
+			auto &weights = cluster.GetWeights();
+			for (auto n = 0; n < weights.size(); n++)
+			{
+				jsonCluster["weights"].append(serialize(weights[n]));
+			}
+			jsonMesh["clusters"].append(jsonCluster);
+		}
+
+		root["meshes"].append(jsonMesh);
+	}
+
+	for (BoneNode* bone = mNode.GetBoneNodeRoot(); bone != NULL; bone = bone->mNext)
+	{
+		root["bones"].append(serialize(bone));
+	}
+
+	if (!root.empty()) 
+	{
+		std::ofstream out(name);
+		if (out.is_open())
+		{
+			out << root.toStyledString();
+			out.close();
+		}
 	}
 }

@@ -1,3 +1,5 @@
+#include "fbxserialize.h"
+
 #include <config.h>
 #include <map>
 #include <vector>
@@ -5,15 +7,19 @@
 #include <bonenode.h>
 #include "Common.h"
 
-#include <fbxcast.h>
 #include <fbxcore.h>
 #include <fbxsdk.h>
+#include <iostream>  
+#include <fstream>  
+#include <stdlib.h>   
+#include <fbxcast.h>   
+
 #include"vec.h"
 #include"matrix.h"
-#include <jsonserialize.h>
 
-/*
-void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::map<FbxCluster*,std::string> &fbxClusters) {
+
+
+void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::map<FbxCluster*, std::string> &fbxClusters) {
 
 	for (MeshNode* node = meshNode; node != NULL; node = node->mNext)
 	{
@@ -36,13 +42,13 @@ void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::m
 		m_pUVElement->SetMappingMode(FbxGeometryElement::eByControlPoint);
 		m_pUVElement->SetReferenceMode(FbxGeometryElement::eDirect);
 
-		for (auto &material : node->GetMaterialNodes()) 
+		for (auto &material : node->GetMaterialNodes())
 		{
-			fbxsdk::FbxSurfacePhong * phong = fbxsdk::FbxSurfacePhong::Create(scene,"");
+			fbxsdk::FbxSurfacePhong * phong = fbxsdk::FbxSurfacePhong::Create(scene, "");
 
 			auto diffuse = material.GetPropNode("Diffuse");
 			auto &color = diffuse.color;
-			phong->Diffuse = FbxDouble3(color[0], color[1],color[2]);
+			phong->Diffuse = FbxDouble3(color[0], color[1], color[2]);
 			phong->DiffuseFactor = diffuse.opacity;
 
 			for (auto &texture : diffuse.textures)
@@ -68,7 +74,7 @@ void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::m
 		auto& points = node->GetPoints();
 		auto& uvs = node->GetUVs()[0];
 		auto& normals = node->GetNormals()[0];
-	
+
 		lMesh->InitControlPoints(points.size());
 		for (auto faceIndex = 0; faceIndex < faces.size(); ++faceIndex)
 		{
@@ -146,43 +152,28 @@ void onObtainNode(BoneNode *boneNode, FbxScene* scene, FbxNode* parent, std::map
 	}
 }
 
-void onObtainBoneNodes(Node* cnode) {
 
-	JsonSerialize cc;
-	cc.Set(cnode);
-	cc.Save("aaa.txt");
-
-
-	Node *node = new Node();
-	cc.Get(node);
+void FbxSerialize::Set(const std::string &name)
+{
 	FbxScene* mScene = NULL;
 	FbxManager* mSdkManager = NULL;
 	InitializeSdkObjects(mSdkManager, mScene);
 
 	FbxNode* lNode = mScene->GetRootNode();
-	mScene->GetRootNode()->AddChild(lNode);
+	//mScene->GetRootNode()->AddChild(lNode);
 
-	std::map<int, FbxNode*> skeletons;
 	std::map<FbxCluster*, std::string> fbxClusters;
-	onObtainMesh(node->GetMeshNodeRoot(), mScene, lNode, fbxClusters);
-	onObtainNode(node->GetBoneNodeRoot(), mScene, lNode, fbxClusters);
-	
-	SaveScene(mSdkManager, mScene, "xxxx.fbx");
+	onObtainMesh(mNode.GetMeshNodeRoot(), mScene, lNode, fbxClusters);
+	onObtainNode(mNode.GetBoneNodeRoot(), mScene, lNode, fbxClusters);
+
+	SaveScene(mSdkManager, mScene, name.c_str());
 	DestroySdkObjects(mSdkManager, true);
+
 }
 
-*/
-int main(int argc, char* argv[])
+Node * FbxSerialize::Get(const std::string & name)
 {
-	
-
-	//FBXCore core("Guard.FBX");
-	//core.mNode;
-
-	//onObtainBoneNodes(core.mNode.get());
-
-	system("pause");
-	
-	return 0;
+	Node *pNode = &mNode;
+	FBXCore core(name, pNode);
+	return pNode;
 }
-

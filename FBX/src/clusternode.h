@@ -22,19 +22,18 @@ public:
 	std::vector<Weight>&	GetWeights();
 	void                    AddWeight(const int& index, const float& weight);
 
-	const Matrix&		GetTransformMatrix() const;
+	const Matrix&			GetTransformMatrix() const;
 	void					SetTransformMatrix(const Matrix &transform);
 
-	const Matrix&		GetLinkTransformLinkMatrix() const;
+	const Matrix&			GetLinkTransformLinkMatrix() const;
 	void					SetLinkTransformLinkMatrix(const Matrix &transform);
 
 private:
 
-	std::string						mName;
-	std::string						mLinkName;
+	std::string				mName;
+	std::string				mLinkName;
+	std::vector<Weight>		mWeights;
 
-	std::vector<Weight>				mWeights;
-
-	Matrix						mMatrix;
-	Matrix						mLinkMatrix;
+	Matrix					mMatrix;
+	Matrix					mLinkMatrix;
 };

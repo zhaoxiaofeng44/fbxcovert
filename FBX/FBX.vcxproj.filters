@@ -100,9 +100,6 @@
     <ClInclude Include="src\json\json-forwards.h">
       <Filter>json</Filter>
     </ClInclude>
-    <ClInclude Include="serialize.h">
-      <Filter>src\Serialize</Filter>
-    </ClInclude>
     <ClInclude Include="jsonserialize.h">
       <Filter>src\Serialize</Filter>
     </ClInclude>
@@ -114,6 +111,18 @@
     </ClInclude>
     <ClInclude Include="..\include\core\matrix.h">
       <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animlayer.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\animsample.h">
+      <Filter>src\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\fbxserialize.h">
+      <Filter>src\Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="iserialize.h">
+      <Filter>src\Serialize</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -148,10 +157,13 @@
     <ClCompile Include="src\jsoncpp.cpp">
       <Filter>json</Filter>
     </ClCompile>
-    <ClCompile Include="serialize.cpp">
+    <ClCompile Include="jsonserialize.cpp">
       <Filter>src\Serialize</Filter>
     </ClCompile>
-    <ClCompile Include="jsonserialize.cpp">
+    <ClCompile Include="src\animlayer.cpp">
+      <Filter>src\Node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fbxserialize.cpp">
       <Filter>src\Serialize</Filter>
     </ClCompile>
   </ItemGroup>

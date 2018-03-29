@@ -1,30 +1,24 @@
-#include <fbxcore.h>
+
 #include <log.h>
 #include <meshnode.h>
 #include <fbxcast.h>
 #include <fbxdevice.h>
-#include <matrix4x4.h>
-#include <quaternion.h>
+#include <fbxcore.h>
 
+#include <fbxsdk.h>
 using namespace fbxsdk;
 
-FBXCore::FBXCore(const std::string &filename)
+FBXCore::FBXCore(const std::string &filename ,Node* pNode)
 {
 	//create fbxscene importer manager animation layers
 	FBXDevice Device(filename);
-
 	auto FbxRoot = Device.GetRootNode();
-	mImporter = Device.GetImporter();
-	auto Scene = Device.GetScene();
+	auto Importer = Device.GetImporter();
 	
-	mNode = std::make_shared<Node>();
+	mNode = pNode ? pNode : new Node();
 	ProcessBoneNodes(FbxRoot, mNode->GetBoneNodeRoot());
 	ProcessMeshNodes(FbxRoot, mNode->GetMeshNodeRoot());
-}
-
-FBXCore::~FBXCore()
-{
-	
+	ProcessPoses(FbxRoot, Importer);
 }
 
 bool FBXCore::ProcessBoneNodes(FbxNode* pNode, BoneNode* parentBoneNode)
@@ -104,68 +98,6 @@ BoneNode* FBXCore::ProcessBoneNode(FbxNode* pNode, BoneNode* parent)
 	FbxVector4 S = pNode->LclScaling.Get();
 	localTRS.SetTRS(T, R, S);
 	boneNode->SetLocalTransform(FBXCast::cast(localTRS));
-
-	//TODO : REPLACE TAKE ANIMATION
-	/*------------------------ ANIMATION LAYER SAMPLE ------------------------------*/
-	//Base Animation Take
-	/*FbxTakeInfo* Take = mImporter->GetTakeInfo(0);
-	FbxTime Start = Take->mLocalTimeSpan.GetStart();
-	FbxTime End = Take->mLocalTimeSpan.GetStop();
-
-	FbxTime Length = End.GetFrameCount(FRAME_24) -
-		Start.GetFrameCount(FRAME_24) + 1;
-
-	if (Length.Get()) {
-		//Set Tack Key Nums
-		boneNode->AllocateTracks(Length.Get());
-	}
-
-	for (FbxLongLong i = Start.GetFrameCount(FRAME_24);
-		i <= End.GetFrameCount(FRAME_24); ++i)
-	{
-		
-		FbxTime currentFbxTime;
-		currentFbxTime.SetFrame(i, FRAME_24);
-		
-		const FbxAMatrix FBXLocal = pNode->EvaluateLocalTransform(currentFbxTime, FbxNode::eDestinationPivot);
-		//convert Fbx Matrix to Matrix4x4
-		Matrix4x4 LocalM(FBXLocal.Transpose());
-
-		auto Prositon = LocalM.getTransform();
-		auto Scale = LocalM.getScale();
-		auto Rotation = LocalM.getQuaternion();
-	
-		float currentTime = (float)currentFbxTime.GetMilliSeconds() / 1000.f;
-
-		VectorKey PositionKey(Prositon, currentTime);
-		VectorKey ScaleKey(Scale, currentTime);
-		QuatKey RotationKey(Rotation, currentTime);
-
-		boneNode->AddPositionKey(PositionKey);
-		boneNode->AddScaleKey(ScaleKey);
-		boneNode->AddRotationKey(RotationKey);
-	}*/
-	if (parent)
-	{
-		//pNode->
-		auto type = pNode->InheritType.Get();
-		switch (type)
-		{
-		case FbxTransform::eInheritRrs:
-			//neNode->SetInheritScale(false);
-			break;
-		case FbxTransform::eInheritRrSs:
-			LOG_ERROR("RrSs dosent supported");
-			break;
-		case FbxTransform::eInheritRSrs:
-			//neNode->SetInheritScale(true);
-			break;
-		}
-	}
-	else
-	{
-		//boneNode->SetInheritScale(false);
-	}
 
 	return boneNode;
 }
@@ -448,5 +380,42 @@ void FBXCore::BuildMeshSkin(FbxMesh* pMesh, MeshNode* meshNode)
 
 void FBXCore::ProcessPoses(FbxNode *pNode, FbxImporter *importer)
 {
-	//TODO : add Pose Matrix to each boneNode
+	AnimLayer animLayer(importer);
+	for (auto index = 0; index < animLayer.GetNumSamples(); index++) {
+		ProcessPose(pNode, animLayer.GetSample(index));
+	}
+	mNode->SetAnimLayer(animLayer);
 }
+
+void FBXCore::ProcessPose(FbxNode * pNode, AnimSample* animSample)
+{
+	const FbxNodeAttribute* pNodeAttr = pNode->GetNodeAttribute();
+	if (pNodeAttr)
+	{
+		const auto type = pNodeAttr->GetAttributeType();
+		switch (type)
+		{
+		case fbxsdk::FbxNodeAttribute::eSkeleton: {
+			auto boneNode = mNode->GetBoneNodeByName(pNode->GetName());
+			if (boneNode) {
+				boneNode->SetAnimTransform(
+					animSample->mStart,
+					FBXCast::cast(pNode->EvaluateLocalTransform(FbxTime(animSample->mStart), FbxNode::eDestinationPivot))
+				);
+				boneNode->SetAnimTransform(
+					animSample->mEnd,
+					FBXCast::cast(pNode->EvaluateLocalTransform(FbxTime(animSample->mEnd), FbxNode::eDestinationPivot))
+				);
+			}
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	for (int childIndex = 0; childIndex < pNode->GetChildCount(); ++childIndex)
+	{
+		ProcessPose(pNode->GetChild(childIndex), animSample);
+	}
+}
+

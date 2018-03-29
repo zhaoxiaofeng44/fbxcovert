@@ -1,14 +1,12 @@
 #pragma once
-
-#include <bonenode.h>
-#include <meshnode.h>
-#include <config.h>
 #include <string>
 #include <map>
 #include <vector>
+#include "config.h"
+#include "bonenode.h"
+#include "meshnode.h"
+#include "animlayer.h"
 
-class AnimNode;
-class FlimBoxNode;
 class Node
 {
 public:
@@ -25,8 +23,15 @@ public:
 	void				AddChildMeshNode(MeshNode* parent, MeshNode* node);
 	MeshNode*			GetCurrentMeshNode();
 
+	/*------------ ANIM NODE -------------*/
+	AnimLayer&			GetAnimLayer();
+	void				SetAnimLayer(AnimLayer& layer);
+
+	void                Clear();
+
 private:
 	NodeTree<BoneNode>	mBoneNodes;
 	NodeTree<MeshNode>	mMeshNodes;
+	AnimLayer           mAnimLayer;
 
 };

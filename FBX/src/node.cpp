@@ -62,4 +62,19 @@ MeshNode* Node::GetCurrentMeshNode()
 	return NULL;
 }
 
+AnimLayer& Node::GetAnimLayer()
+{
+	return mAnimLayer;
+}
 
+void Node::SetAnimLayer(AnimLayer& layer)
+{
+	mAnimLayer = layer;
+}
+
+void  Node::Clear()
+{
+	mBoneNodes.Clear();
+	mMeshNodes.Clear();
+	mAnimLayer.Clear();
+}

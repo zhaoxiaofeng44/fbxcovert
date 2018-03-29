@@ -31,7 +31,9 @@
     <ClInclude Include="element.h" />
     <ClInclude Include="jsonserialize.h" />
     <ClInclude Include="nodeset.h" />
-    <ClInclude Include="serialize.h" />
+    <ClInclude Include="iserialize.h" />
+    <ClInclude Include="src\animlayer.h" />
+    <ClInclude Include="src\animsample.h" />
     <ClInclude Include="src\bonenode.h" />
     <ClInclude Include="src\clusternode.h" />
     <ClInclude Include="src\Common.h" />
@@ -40,6 +42,7 @@
     <ClInclude Include="src\fbxcast.h" />
     <ClInclude Include="src\fbxdevice.h" />
     <ClInclude Include="src\fbxcore.h" />
+    <ClInclude Include="src\fbxserialize.h" />
     <ClInclude Include="src\json\json-forwards.h" />
     <ClInclude Include="src\json\json.h" />
     <ClInclude Include="src\materialnode.h" />
@@ -52,13 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="jsonserialize.cpp" />
-    <ClCompile Include="serialize.cpp" />
+    <ClCompile Include="src\animlayer.cpp" />
     <ClCompile Include="src\bonenode.cpp" />
     <ClCompile Include="src\clusternode.cpp" />
     <ClCompile Include="src\Common.cxx" />
     <ClCompile Include="src\fbxcast.cpp" />
     <ClCompile Include="src\fbxdevice.cpp" />
     <ClCompile Include="src\fbxcore.cpp" />
+    <ClCompile Include="src\fbxserialize.cpp" />
     <ClCompile Include="src\jsoncpp.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\materialnode.cpp" />

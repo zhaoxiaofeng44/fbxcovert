@@ -32,3 +32,13 @@ void BoneNode::SetLocalTransform(const Matrix &transform)
 {
 	mLocal = transform;
 }
+
+const Matrix& BoneNode::GetAnimTransform(int frame)
+{
+	return mAnims[frame];
+}
+
+void BoneNode::SetAnimTransform(int frame, const Matrix &transform)
+{ 
+	mAnims[frame] = transform;
+}
