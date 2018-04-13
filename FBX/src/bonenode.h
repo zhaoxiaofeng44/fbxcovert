@@ -10,7 +10,6 @@ class BoneNode : public NodeTreeItem<BoneNode>
 {
 public:
 	BoneNode();
-	~BoneNode();
 
 	void					SetName(const std::string &name);
 	const std::string&		GetName() const;

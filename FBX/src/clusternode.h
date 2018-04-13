@@ -11,7 +11,6 @@ class ClusterNode
 {
 public:
 	ClusterNode();
-	~ClusterNode();
 
 	void					SetName(const std::string &name);
 	const std::string&		GetName() const;

@@ -91,9 +91,6 @@
     <ClInclude Include="src\fbxcast.h">
       <Filter>src\Fbx</Filter>
     </ClInclude>
-    <ClInclude Include="nodeset.h">
-      <Filter>src\Node</Filter>
-    </ClInclude>
     <ClInclude Include="src\json\json.h">
       <Filter>json</Filter>
     </ClInclude>
@@ -119,9 +116,6 @@
       <Filter>src\Node</Filter>
     </ClInclude>
     <ClInclude Include="src\fbxserialize.h">
-      <Filter>src\Serialize</Filter>
-    </ClInclude>
-    <ClInclude Include="iserialize.h">
       <Filter>src\Serialize</Filter>
     </ClInclude>
   </ItemGroup>

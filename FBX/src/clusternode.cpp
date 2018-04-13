@@ -4,9 +4,6 @@ ClusterNode::ClusterNode()
 {
 }
 
-ClusterNode::~ClusterNode()
-{
-}
 
 void ClusterNode::SetName(const std::string &name)
 {

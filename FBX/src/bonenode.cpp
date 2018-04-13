@@ -5,12 +5,6 @@
 BoneNode::BoneNode()
 	: mName("null")
 {
-
-}
-
-BoneNode::~BoneNode()
-{
-
 }
 
 void BoneNode::SetName(const std::string &name)

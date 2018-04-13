@@ -11,7 +11,8 @@ class Node
 {
 public:
 	Node();
-	~Node();
+
+	Node(const Node &);
 
 	/*------------ BONE NODE -------------*/
 	BoneNode*			GetBoneNodeRoot();
@@ -28,6 +29,8 @@ public:
 	void				SetAnimLayer(AnimLayer& layer);
 
 	void                Clear();
+
+	void                Copy(const Node &other);
 
 private:
 	NodeTree<BoneNode>	mBoneNodes;

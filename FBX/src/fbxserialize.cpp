@@ -16,7 +16,7 @@
 
 #include"vec.h"
 #include"matrix.h"
-
+#include"node.h"
 
 
 void onObtainMesh(MeshNode *meshNode, FbxScene* scene, FbxNode* rootNode, std::map<FbxCluster*, std::string> &fbxClusters) {
@@ -152,28 +152,27 @@ void onObtainNode(BoneNode *boneNode, FbxScene* scene, FbxNode* parent, std::map
 	}
 }
 
+Node FbxSerialize::Get(const std::string & name)
+{
+	Node sNode;
+	FBXCore core(name, &sNode);
+	return sNode;
+}
 
-void FbxSerialize::Set(const std::string &name)
+void FbxSerialize::Set(const std::string &name, Node & sNode)
 {
 	FbxScene* mScene = NULL;
 	FbxManager* mSdkManager = NULL;
 	InitializeSdkObjects(mSdkManager, mScene);
 
-	FbxNode* lNode = mScene->GetRootNode();
-	//mScene->GetRootNode()->AddChild(lNode);
+	FbxNode* lNode = mScene->GetRootNode();;
 
 	std::map<FbxCluster*, std::string> fbxClusters;
-	onObtainMesh(mNode.GetMeshNodeRoot(), mScene, lNode, fbxClusters);
-	onObtainNode(mNode.GetBoneNodeRoot(), mScene, lNode, fbxClusters);
+	onObtainMesh(sNode.GetMeshNodeRoot(), mScene, lNode, fbxClusters);
+	onObtainNode(sNode.GetBoneNodeRoot(), mScene, lNode, fbxClusters);
 
 	SaveScene(mSdkManager, mScene, name.c_str());
 	DestroySdkObjects(mSdkManager, true);
 
 }
 
-Node * FbxSerialize::Get(const std::string & name)
-{
-	Node *pNode = &mNode;
-	FBXCore core(name, pNode);
-	return pNode;
-}

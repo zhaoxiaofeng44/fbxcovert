@@ -12,23 +12,39 @@ public:
 	{
 		mRoot = NULL;
 		mEnd = NULL;
-		count = 0;
-	};
+		mCount = 0;
+	}
+
+	NodeTree(const NodeTree &other)
+		: NodeTree()
+	{
+		Copy(other);
+	}
 
 	virtual ~NodeTree()
 	{
 		Clear();
-	};
+	}
 
 	virtual void Clear()
 	{
-		for (T *type = mRoot; type != NULL; )
-		{
-			T *temp = type;
-			type = type->mNext;
-			delete temp;
+		if (mRoot) {
+			delete mRoot;
+			mRoot = NULL;
 		}
-		count = 0;
+		mCount = 0;
+	}
+
+	virtual void Copy(const NodeTree &other)
+	{
+		if (other.mRoot) {
+			if (mRoot) {
+				mRoot->Copy(*other.mRoot);
+			}
+			else {
+				AddChild(NULL, new T(*other.mRoot));
+			}
+		}
 	}
 
 	virtual T* GetRoot()
@@ -43,30 +59,13 @@ public:
 	{
 		if (parent)
 		{
-			if (parent->mFirstChild)
-			{
-				parent->mEndChild->mNext = item;
-				item->mPrevious = parent->mEndChild;
-				item->mNext = NULL;
-				parent->mEndChild = parent->mEndChild->mNext;
-			}
-			else
-			{
-				parent->mEndChild = item;
-				parent->mFirstChild = item;
-			}
-
-			item->mParent = parent;
+			parent->AddChild(item);
 		}
 		else
 		{
 			if (mRoot)
 			{
-				mEnd->mNext = item;
-				item->mNext = NULL;
-				item->mPrevious = mEnd;
-				mEnd = mEnd->mNext;
-
+				mRoot->AddChild(item);
 			}
 			else
 			{
@@ -74,8 +73,7 @@ public:
 				mEnd = item;
 			}
 		}
-		item->mId = count;
-		++count;
+		mCount ++;
 	}
 
 	virtual T* GetNextChildFirst(
@@ -105,16 +103,21 @@ public:
 		return NULL;
 	}
 
-	T *mRoot;
-	T *mEnd;
-	
 	int Size()
 	{
-		return count + 1;
+		return mCount;
 	}
-private:
-	int count;
 
+	NodeTree& operator =(const NodeTree& other)
+	{
+		Copy(other);
+		return *this;
+	}
+
+	T *mRoot;
+	T *mEnd;
+private:
+	int mCount;
 };
 
 template<class T>
@@ -122,35 +125,70 @@ class NodeTreeItem
 {
 	friend class NodeTree<T>;
 public:
-	NodeTreeItem::NodeTreeItem()
+	NodeTreeItem()
 	{
 		mNext = NULL;
 		mPrevious = NULL;
 		mParent = NULL;
 		mFirstChild = NULL;
 		mEndChild = NULL;
-	};
-
-	virtual NodeTreeItem::~NodeTreeItem()
-	{
-		for (T *item = mFirstChild; item != NULL; )
-		{
-			T *temp = item;
-			item = item->mNext;
-			delete temp;
-		}
-	};
-
-	int GetId()
-	{
-		return mId;
 	}
 
+	NodeTreeItem(const NodeTreeItem & other)
+		: NodeTreeItem()
+	{
+		Copy(other);
+	};
+
+	virtual ~NodeTreeItem()
+	{
+		Clear();
+	};
+
+	virtual void Clear()
+	{
+		T *pItem = mFirstChild;
+		while (pItem) {
+			T *temp = pItem;
+			pItem = pItem->mNext;
+			delete temp;
+		}
+		mFirstChild = NULL;
+		mEndChild = NULL;
+	}
+
+	virtual void Copy(const NodeTreeItem & other)
+	{
+		T *pItem = other.mFirstChild;
+		while (pItem){
+			AddChild(new T(*pItem));
+			pItem = pItem->mNext;
+		}
+	}
+
+	virtual void AddChild(T *item)
+	{
+		if (mEndChild)
+		{
+			mEndChild->mNext = item;
+			mPrevious = mEndChild;
+			mNext = NULL;
+			mEndChild = mEndChild->mNext;
+		}
+		else
+		{
+			mNext = NULL;
+			mPrevious = NULL;
+			mFirstChild = item;
+			mEndChild = mFirstChild;
+		}
+		item->mParent = (T*)this;
+	}
+
+public:
 	T *mNext;
 	T *mPrevious;
 	T *mParent;
 	T *mFirstChild;
 	T *mEndChild;
-private:
-	int mId;
 };

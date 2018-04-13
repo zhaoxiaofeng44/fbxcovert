@@ -6,9 +6,9 @@ Node::Node()
 
 }
 
-Node::~Node()
+Node::Node(const Node &other)
 {
-	
+	Copy(other);
 }
 
 /*------------ BONE NODE -------------*/
@@ -77,4 +77,11 @@ void  Node::Clear()
 	mBoneNodes.Clear();
 	mMeshNodes.Clear();
 	mAnimLayer.Clear();
+}
+
+void Node::Copy(const Node &other)
+{
+	mBoneNodes = other.mBoneNodes;
+	mMeshNodes = other.mMeshNodes;
+	mAnimLayer = other.mAnimLayer;
 }

@@ -16,6 +16,8 @@ class AnimLayer
 public:
 	AnimLayer();
 
+	AnimLayer(AnimLayer&);
+
 	AnimLayer(FbxImporter* importer);
 	
 	void SetInfo(FbxImporter* importer);

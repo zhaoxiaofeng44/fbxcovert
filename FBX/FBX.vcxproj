@@ -30,8 +30,6 @@
     <ClInclude Include="..\include\GLEngine\log.h" />
     <ClInclude Include="element.h" />
     <ClInclude Include="jsonserialize.h" />
-    <ClInclude Include="nodeset.h" />
-    <ClInclude Include="iserialize.h" />
     <ClInclude Include="src\animlayer.h" />
     <ClInclude Include="src\animsample.h" />
     <ClInclude Include="src\bonenode.h" />

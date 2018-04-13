@@ -7,6 +7,13 @@ AnimLayer::AnimLayer()
 {
 }
 
+AnimLayer::AnimLayer(AnimLayer& other)
+	: mNumSamples(other.mNumSamples)
+	, mSamples(other.mSamples)
+	, mSamplesNames(other.mSamplesNames)
+{
+}
+
 AnimLayer::AnimLayer(FbxImporter* importer)
 	: AnimLayer()
 {

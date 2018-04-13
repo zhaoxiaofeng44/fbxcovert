@@ -1,1 +1,1 @@
-Warning: Unsupported cluster mode for skinned mesh '' encounter (file: 'D:\fbxC\fbxcovert\FBX\xxxx.fbx') [ (line 0)]
+Warning: Unsupported cluster mode for skinned mesh '' encounter (file: 'D:\fbxC\fbxcovert\FBX\Guardz.FBX') [ (line 0)]
